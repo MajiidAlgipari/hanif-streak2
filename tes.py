@@ -14,68 +14,8 @@ DAFTAR_TEMAN = [
     "chell (^..^)9",
     "Yann",
     "hottest إلمو",
-    "Agizzz",
-    "Elvyett",
-    "IOSHAA",
-    "ayayaa",
-    "iaa",
-    "raelie",
-    "bakpao bakpaoo",
-    "_-",
-    "vinalifa",
-    "hottest المو",
-    "yarrr",
-    "sky",
-
-    
-    # Foto 2 (Bagian atas/tambahan)
-    "Terus Terang Keterangan",
-    "Electro Engineer",
-    "X A N D E R",
-    "dhyra",
-    "raditt",
-    "aldii",
-    "ivansubagja4",
-    "ya kaya kue",
-    "qisz",
-    "milauvv",
-
-    
-    
-    # Foto 3
-    "sasaa",
-    "arsy",
-    "diastyvv",
-    "ho`oh",
-    "𝙍𝙮𝙮𝙯𝙝🦈",
-    "𝖆𝖟𝖍𝖆𝖗",
-    "j ipang_",
-    "Ora Ngapak, Ora Kepenak",
-    "sky",
-    "jwiiieee",
-    "L A 4 5 Z",
-    "n",
-    
-    # Foto 4
-    "eoneoeneon",
-    "nanaenaps",
-    "alisyaa",
-    "evlewt",
-    "mario aja",
-    "sfraaa",
-    "AbdoEL",
-    
-    # Foto 5
-    "rd fi",
-    "Wiwi",
-    "stang jepit",
-    "inoo",
-    "k",
-    "faizy",
-    "nno",
-    "gipar",
     "Z",
-    "k",
+    "n"
     
 ]
 
