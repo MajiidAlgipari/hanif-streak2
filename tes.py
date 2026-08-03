@@ -14,8 +14,7 @@ DAFTAR_TEMAN = [
     "chell ₍^. .^₎Ⳋ"
     "n",
     "Z",
-    "hottest إلمو
-",
+    "hottest إلمو",
     "Yann"
 ]
 
