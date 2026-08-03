@@ -12,11 +12,16 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 # 📝 Daftar nama tampilan teman Anda
 DAFTAR_TEMAN = [
     "chell ₍^. .^₎Ⳋ"
+    "n",
+    "Z",
+    "hottest إلمو
+",
+    "Yann"
 ]
 
 # 💬 Variasi pesan streak harian
 DAFTAR_PESAN = [
-    "🔥🔥🔥🔥",
+    "😁😁😁",
 ]
 # =======================================================
 
