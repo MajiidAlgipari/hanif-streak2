@@ -11,11 +11,11 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 
 # 📝 Daftar nama tampilan teman Anda
 DAFTAR_TEMAN = [
-    "chell",        # Cukup pakai "chell", bot akan mencocokkan kontak yang mengandung nama ini
     "Yann",
     "hottest إلمو",
     "Z",
-    "n"
+    "n",
+    "chell"        # Cukup pakai "chell", bot akan mencocokkan kontak yang mengandung nama ini
 ]
 
 # 💬 Variasi pesan streak harian
