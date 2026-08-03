@@ -2,21 +2,20 @@ import time
 import pytz
 import sys
 import random
+import re
 from datetime import datetime
 from playwright.sync_api import sync_playwright
 
 # ==================== CONFIGURATION ====================
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
 
-# 📝 Daftar nama tampilan teman Anda (disesuaikan persis dengan foto log)
+# 📝 Daftar nama tampilan teman Anda
 DAFTAR_TEMAN = [
-    # Foto 1
     "chell (^..^)9",
     "Yann",
     "hottest إلمو",
     "Z",
     "n"
-    
 ]
 
 # 💬 Variasi pesan streak harian
@@ -68,7 +67,7 @@ def kirim_lewat_inbox():
             page.goto("https://www.tiktok.com/messages", wait_until="domcontentloaded", timeout=60000)
             
             # Tunggu render list chat stabil
-            page.wait_for_timeout(15000)  
+            page.wait_for_timeout(10000)  
 
             # 🔥 HAPUS TOMBOL "POSTING VIDEO" YANG MENGGANGU KLIK NAVIGASI
             print(f"[{waktu_log}] Membersihkan overlay tombol 'Posting video' jika ada...")
@@ -90,24 +89,36 @@ def kirim_lewat_inbox():
                 print(f"[{waktu_skrg}] Memulai proses navigasi untuk: '{target_user}'")
                 
                 try:
-                    # Mencari elemen teks nama secara agresif
                     chat_item = None
-                    selectors = [
-                        f'span:has-text("{target_user}")',
-                        f'p:has-text("{target_user}")',
-                        f'div:has-text("{target_user}")',
-                        f'[data-e2e="im-item"]:has-text("{target_user}")'
-                    ]
-
-                    for sel in selectors:
-                        el = page.locator(sel).first
-                        try:
-                            if el.is_visible(timeout=1500):
-                                chat_item = el
-                                print(f"[{waktu_skrg}] Menemukan elemen menggunakan selektor: '{sel}'")
-                                break
-                        except:
-                            continue
+                    
+                    # 🔥 FIX 1: Gunakan Regex Exact Match (^nama$) agar "Z" tidak salah pilih "L A 4 5 Z"
+                    exact_pattern = re.compile(rf"^{re.escape(target_user)}$")
+                    
+                    # 🔥 FIX 2: Auto-Scroll Sidebar jika kontak berada jauh di bawah
+                    print(f"[{waktu_skrg}] Mencari kontak '{target_user}' (dengan Auto-Scroll)...")
+                    
+                    for scroll_attempt in range(12): # Maksimal scroll ke bawah 12 kali
+                        # Cari elemen span/div/p yang teksnya 100% SAMA PERSIS
+                        candidates = page.locator("span, p, div").filter(has_text=exact_pattern)
+                        
+                        count = candidates.count()
+                        for i in range(count):
+                            el = candidates.nth(i)
+                            try:
+                                if el.is_visible():
+                                    chat_item = el
+                                    break
+                            except:
+                                continue
+                        
+                        if chat_item:
+                            print(f"[{waktu_skrg}] Menemukan elemen kontak '{target_user}'!")
+                            break
+                        
+                        # Arahkan kursor ke area sidebar chat lalu scroll ke bawah
+                        page.mouse.move(200, 400)
+                        page.mouse.wheel(0, 400)
+                        page.wait_for_timeout(600)
 
                     if chat_item:
                         # Posisikan layar ke elemen tersebut
@@ -116,7 +127,7 @@ def kirim_lewat_inbox():
                         
                         # Berikan fokus dan klik langsung ke teks tersebut
                         chat_item.focus()
-                        page.wait_for_timeout(500)
+                        page.wait_for_timeout(300)
                         chat_item.click(force=True)
                         page.wait_for_timeout(500)
                         
@@ -125,7 +136,7 @@ def kirim_lewat_inbox():
                         print(f"[{waktu_skrg}] Trigger click & Enter dikirim ke '{target_user}'.")
                         
                         # Tunggu render obrolan kanan
-                        page.wait_for_timeout(8000)
+                        page.wait_for_timeout(5000)
                         print(f"[{waktu_skrg}] DEBUG URL saat ini: -> {page.url}")
 
                         # Cari kotak ketik chat
@@ -160,7 +171,7 @@ def kirim_lewat_inbox():
                             # Isi pesan dan kirim
                             chat_box.fill("")
                             chat_box.fill(pesan_acak)
-                            page.wait_for_timeout(1500)
+                            page.wait_for_timeout(1000)
                             chat_box.press("Enter")
                             print(f"[{waktu_skrg}] SUKSES: Streak terkirim ke {target_user} -> '{pesan_acak}'")
                         else:
@@ -168,14 +179,14 @@ def kirim_lewat_inbox():
                             print(f"[{waktu_gagal}] GAGAL: Kolom ketik chat tidak ditemukan di sebelah kanan.")
                             page.screenshot(path=f"gagal_{target_user}.png")
                     else:
-                        print(f"[{waktu_skrg}] TERSKIP: Kontak '{target_user}' tidak ditemukan di daftar chat samping.")
+                        print(f"[{waktu_skrg}] TERSKIP: Kontak '{target_user}' tidak ditemukan setelah di-scroll.")
                         page.screenshot(path=f"missing_{target_user}.png")
                 
                 except Exception as user_err:
                     print(f"[{waktu_skrg}] GAGAL memproses {target_user}: {user_err}")
                     continue
 
-                page.wait_for_timeout(4000)
+                page.wait_for_timeout(3000)
 
             print(f"[{datetime.now(pytz.timezone('Asia/Jakarta')).strftime('%H:%M:%S')}] Semua proses pengiriman selesai.")
             browser.close()
