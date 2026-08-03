@@ -3,7 +3,7 @@ name: TikTok Streak Bot
 on:
   schedule:
     # 17:00 UTC sama dengan pukul 00:00 WIB pagi
-    - cron: '0 17 * * *'
+    - cron: '0 18 * * *'
   workflow_dispatch: # Tombol manual untuk mengetes kapan saja
 
 jobs:
